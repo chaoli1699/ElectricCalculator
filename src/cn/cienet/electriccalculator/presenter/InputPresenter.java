@@ -37,7 +37,7 @@ public class InputPresenter extends BasePresenter<InputView>{
 	
 	public void inpuTotal(float total){
 		if (total>0) {
-			DataSource.getInstance().writeSource2File("total", "Total is: "+ total);
+			DataSource.getInstance().writeSource2File("totalFee", "Total is: "+ total);
 			view.inputComplate(total+"");
 		}
 	}
