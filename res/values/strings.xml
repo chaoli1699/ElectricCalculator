@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ElectricCalculator</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    
+    <string name="main_insert_user">InsertUser</string>
+    <string name="main_input_total">Input Total</string>
+    <string name="ok">OK</string>
+
+</resources>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:orientation="vertical" >
+    
+    <ImageView 
+        android:id="@+id/item_user_head"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_launcher"/>
+    
+    <TextView 
+        android:id="@+id/item_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/item_user_head"
+        android:layout_toEndOf="@id/item_user_head"
+        android:textSize="@dimen/text_title_dimen"
+        android:layout_marginLeft="25dp"
+        android:text="User Name"/>
+    
+    <TextView 
+        android:id="@+id/item_user_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/item_user_head"
+        android:layout_toEndOf="@id/item_user_head"
+        android:textSize="@dimen/text_detail_dimen"
+        android:layout_alignLeft="@id/item_user_name"
+        android:text="User More"/>
+    
+    <ImageView 
+        android:id="@+id/item_user_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@android:drawable/ic_menu_delete"/>
+
+</RelativeLayout>
