@@ -13,12 +13,32 @@ public abstract class BaseActivity<P extends BasePresenter> extends Activity {
 	protected static final int INSERT_USER=0;
 	protected static final int INPUT_TOTAL=1;
 	protected static final int SET_USER_SIZE=2;
+	protected static final int USER_INFO=3;
+	protected MyApp mApp;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		mPresenter=createPresenter();
+		
+		mApp=(MyApp) getApplicationContext();
+		registActivity(this);
+	}
+	
+	protected void registActivity(Activity mActivity){
+		mApp.activities.add(mActivity);
+	}
+	
+	protected void unregistActiivty(Activity mActivity){
+		Activity activity;
+		for(int i=0; i<mApp.activities.size(); i++){
+			activity=mApp.activities.get(i);
+			if (activity==mActivity) {
+				mApp.activities.remove(i);
+				break;
+			}
+		}
 	}
 	
 	protected void initActionBar(String title, boolean logoElable, boolean homeEnable){
@@ -60,6 +80,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends Activity {
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
+		unregistActiivty(this);
 		super.onDestroy();
 	}
 }

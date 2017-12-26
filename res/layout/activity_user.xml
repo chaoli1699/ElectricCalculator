@@ -10,12 +10,29 @@
     tools:context="cn.cienet.electriccalculator.UserActivity" >
     
     <TextView 
-        android:id="@+id/user_lastData_lable"
+        android:id="@+id/user_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Last Data: "
-        android:textSize="@dimen/text_detail_dimen"/>
+        android:text="@string/app_name"
+        android:textSize="@dimen/text_title_dimen"/>
+    
+    <TextView 
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_id"
+        android:text="@string/app_name"
+        android:textSize="@dimen/text_title_dimen"/>
+    
+    <TextView 
+        android:id="@+id/user_lastData_lable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_name"
+        android:layout_marginTop="20dp"
+        android:text="@string/last_data"
+        android:textSize="@dimen/text_title_dimen"/>
     
     <EditText 
         android:id="@+id/user_lastData_value"
@@ -34,8 +51,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/user_lastData_lable"
         android:layout_marginTop="20dp"
-        android:text="Current Data: "
-        android:textSize="@dimen/text_detail_dimen"/>
+        android:text="@string/current_data"
+        android:textSize="@dimen/text_title_dimen"/>
     
     <EditText 
         android:id="@+id/user_currentData_value"
@@ -54,15 +71,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/user_currentData_lable"
         android:layout_marginTop="20dp"
-        android:text="Are Count: 0.00"
-        android:textSize="@dimen/text_detail_dimen"/>
+        android:text="@string/air_count"
+        android:textSize="@dimen/text_title_dimen"/>
     
     <TextView 
         android:id="@+id/user_airFee"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/user_airCount"
-        android:text="Air Fee: ￥0.00"
-        android:textSize="@dimen/text_detail_dimen"/>
+        android:text="@string/air_fee"
+        android:textSize="@dimen/text_title_dimen"/>
 
 </RelativeLayout>

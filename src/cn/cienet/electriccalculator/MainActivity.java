@@ -50,7 +50,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
 				}else {
 					Intent intent=new Intent(MainActivity.this, UserActivity.class);
 					intent.putExtra("userId", userSource.get(position).getUserId());
-					startAct(intent);
+					startAct4Result(intent, USER_INFO);
 				}
 			}
 		});
@@ -65,8 +65,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
 				}else {
 					delMode=true;
 				}
-				userListAdapter.setDelMode(delMode);
-				userList.setAdapter(userListAdapter);
+				
+				resetUserList(delMode);
 				return true;
 			}
 		});
@@ -74,6 +74,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
 	
 	private void getUserData(){
 		userSource=mPresenter.getUserList();
+	}
+	
+	private void resetUserList(boolean delMode){
+		userListAdapter.setDelMode(delMode);
+		userList.setAdapter(userListAdapter);
 	}
 	
 	private void refreshView(){
@@ -97,15 +102,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
 	@Override
 	public void removeUserSuccess() {
 		// TODO Auto-generated method stub
-	     delMode=false;
-	     userListAdapter.setDelMode(delMode);
-	     userList.setAdapter(userListAdapter);
+	     refreshView();
 	}
 
 	@Override
 	protected MainPresenter createPresenter() {
 		// TODO Auto-generated method stub
-		return new MainPresenter(this);
+		return new MainPresenter(MainActivity.this, this);
 	}
 	
 	@Override
@@ -122,6 +125,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
 			case INPUT_TOTAL:
 				String total= data.getExtras().getString("total");
 				mPresenter.calculate(Float.valueOf(total));
+				break;
+				
+			case USER_INFO:
+				getUserData();
 				break;
 			default:
 				break;
@@ -140,6 +147,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
+		if (delMode) {
+			delMode=false;
+			resetUserList(delMode);
+		}
+		
 		Intent intent=new Intent(MainActivity.this, InputActivity.class);
 
 		switch (item.getItemId()) {
@@ -161,6 +173,18 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
 			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		if (delMode) {
+			delMode=false;
+			resetUserList(delMode);
+		}else {
+			mApp.exit();
+		}
+		
 	}
 
 }

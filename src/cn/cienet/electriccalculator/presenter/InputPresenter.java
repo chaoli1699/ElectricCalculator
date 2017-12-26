@@ -2,6 +2,8 @@ package cn.cienet.electriccalculator.presenter;
 
 import com.google.gson.Gson;
 
+import android.content.Context;
+import cn.cienet.electriccalculator.R;
 import cn.cienet.electriccalculator.bean.User;
 import cn.cienet.electriccalculator.model.DataSource;
 import cn.cienet.electriccalculator.view.InputView;
@@ -9,9 +11,11 @@ import cn.cienet.electriccalculator.view.InputView;
 public class InputPresenter extends BasePresenter<InputView>{
 	
     private int userSizeMax;
+    private Context context;
     
-	public InputPresenter(InputView view) {
+	public InputPresenter(Context context, InputView view) {
 		// TODO Auto-generated constructor stub
+		this.context=context;
 		attachView(view);
 		userSizeMax=getUserSizeMax();
 	}
@@ -27,11 +31,11 @@ public class InputPresenter extends BasePresenter<InputView>{
 				DataSource.getInstance().writeSource2File("userList", new Gson().toJson(userList));
 				view.inputComplate(null);
 			}else {
-				view.inputFail("Can't insert more user, you can reset USERMAX in settings.");
+				view.inputFail(context.getResources().getString(R.string.user_max_alert));
 			}
 			
 		}else {
-			view.inputFail("Current user exists.");
+			view.inputFail(context.getResources().getString(R.string.user_exist));
 		}
 	}
 	

@@ -71,7 +71,7 @@ public class UserListAdapter extends BaseAdapter{
         
         //Bind data...
         holder.userName.setText(userList.get(position).getUserName());
-        holder.userMore.setText("User should pay£º £¤"+userList.get(position).getTotalFee());
+        holder.userMore.setText(context.getResources().getString(R.string.should_pay)+"£º £¤"+userList.get(position).getTotalFee());
         if (delMode) {
 			holder.userDelete.setVisibility(View.VISIBLE);
 		}else {

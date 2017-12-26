@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import cn.cienet.electriccalculator.presenter.InputPresenter;
 import cn.cienet.electriccalculator.view.InputView;
@@ -20,11 +21,11 @@ public class InputActivity extends BaseActivity<InputPresenter> implements Input
 		requestCode=getIntent().getIntExtra("requestCode", -1);
 		String title="InputActivity";
 		if (requestCode==INSERT_USER) {
-			title="Insert User";
+			title=getResources().getString(R.string.insert_user);
 		}else if (requestCode==INPUT_TOTAL) {
-			title="Input Total";
+			title=getResources().getString(R.string.input_total_money);
 		}else if (requestCode==SET_USER_SIZE) {
-			title="Reset UserMax";
+			title=getResources().getString(R.string.set_user_max);
 		}
 		initActionBar(title, false, true);
 		setContentView(R.layout.activity_input);
@@ -35,12 +36,18 @@ public class InputActivity extends BaseActivity<InputPresenter> implements Input
     private void initView() {
 		// TODO Auto-generated method stub
         content=(EditText) findViewById(R.id.input_content);
+        
+        if (requestCode==INSERT_USER) {
+			content.setInputType(EditorInfo.TYPE_CLASS_TEXT);
+		}else if (requestCode==INPUT_TOTAL || requestCode== SET_USER_SIZE) {
+			content.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+		}
 	}
 	
 	@Override
 	protected InputPresenter createPresenter() {
 		// TODO Auto-generated method stub
-		return new InputPresenter(this);
+		return new InputPresenter(InputActivity.this, this);
 	}
 	
 	@Override

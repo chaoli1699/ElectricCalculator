@@ -10,8 +10,8 @@
     
     <ImageView 
         android:id="@+id/item_user_head"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_launcher"/>
     
@@ -23,7 +23,7 @@
         android:layout_toEndOf="@id/item_user_head"
         android:textSize="@dimen/text_title_dimen"
         android:layout_marginLeft="25dp"
-        android:text="User Name"/>
+        android:text="@string/user_name"/>
     
     <TextView 
         android:id="@+id/item_user_more"
@@ -33,7 +33,7 @@
         android:layout_toEndOf="@id/item_user_head"
         android:textSize="@dimen/text_detail_dimen"
         android:layout_alignLeft="@id/item_user_name"
-        android:text="User More"/>
+        android:text="@string/user_more"/>
     
     <ImageView 
         android:id="@+id/item_user_delete"

@@ -6,14 +6,14 @@
         android:id="@+id/main_insert_user"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
-        android:title="@string/main_insert_user"
+        android:title="@string/insert_user"
         android:icon="@android:drawable/ic_menu_edit"/>
     
     <item
         android:id="@+id/main_input_total"
         android:orderInCategory="100"
         android:showAsAction="ifRoom"
-        android:title="@string/main_input_total"
+        android:title="@string/input_total_money"
         android:icon="@android:drawable/ic_menu_sort_by_size"/>
     
     <item

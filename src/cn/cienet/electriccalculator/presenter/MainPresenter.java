@@ -2,14 +2,19 @@ package cn.cienet.electriccalculator.presenter;
 
 import com.google.gson.Gson;
 
+import android.content.Context;
+import cn.cienet.electriccalculator.R;
 import cn.cienet.electriccalculator.bean.User;
 import cn.cienet.electriccalculator.model.DataSource;
 import cn.cienet.electriccalculator.view.MainView;
 
 public class MainPresenter extends BasePresenter<MainView> {
 
-	public MainPresenter(MainView view){
+	private Context context;
+	
+	public MainPresenter(Context context, MainView view){
 		// TODO Auto-generated constructor stub
+		this.context=context;
 		attachView(view);
 	}
 	
@@ -21,7 +26,7 @@ public class MainPresenter extends BasePresenter<MainView> {
         if (userList.size()>0){
             for (User u:userList){
                 if (left_fee<u.getAirFee()){
-                    view.calculateFail("Total is unreasonable, please check and recalculate.");
+                    view.calculateFail(context.getResources().getString(R.string.total_money_unreasonable));
                     return ;
                 }
                 left_fee-=u.getAirFee();
