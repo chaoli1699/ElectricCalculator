@@ -57,4 +57,26 @@ public class FileUtils {
     	
     	return str;
     }
+    
+    /**
+     * deleteFile
+     * @param filePath
+     * @param fileName
+     * @param onDelFileListener
+     */
+    public static void deleteFile(String filePath, String fileName){
+    	File file=new File(filePath, fileName);
+    	if (file.exists()) {
+    		boolean result = file.delete();
+    		String str;
+    		if (result) {
+    		    str="Del "+fileName+" success!";
+				Log.i(TAG, str);
+				
+			}else {
+				str="Del "+fileName+ " fail!";
+				Log.i(TAG, str);
+			}
+		}
+    }
 }

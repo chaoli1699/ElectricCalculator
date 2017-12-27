@@ -1,20 +1,24 @@
 package cn.cienet.electriccalculator;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
+import cn.cienet.electriccalculator.bean.Bill;
 import cn.cienet.electriccalculator.bean.User;
 import cn.cienet.electriccalculator.presenter.UserPresenter;
+import cn.cienet.electriccalculator.utils.Constants;
 import cn.cienet.electriccalculator.view.UserView;
 
 public class UserActivity extends BaseActivity<UserPresenter> implements UserView{
 	
 	private User mUser; 
 	private EditText lastData, currentData;
-	private TextView userId, userName, airCount, airFee;
-	private static final float ELETRIC_PRICE=0.55f;
+	private TextView userId, userName, billHistory, airCount, airFee;
 	private String AIR_COUNT;
 	private String AIR_FEE;
 	
@@ -35,6 +39,7 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserVie
 	private void initView(){
 		userId=(TextView) findViewById(R.id.user_id);
 		userName=(TextView) findViewById(R.id.user_name);
+		billHistory=(TextView) findViewById(R.id.user_bill_history);
 		
 		lastData=(EditText) findViewById(R.id.user_lastData_value);
 		currentData=(EditText) findViewById(R.id.user_currentData_value);
@@ -46,25 +51,41 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserVie
 		AIR_FEE=getResources().getString(R.string.air_fee);
 		
 		userId.setText(getResources().getString(R.string.user_id)+": "+ mUser.getUserId());
-		userName.setText(getResources().getString(R.string.user_name)+": "+ mUser.getUserName());
+		userName.setText(getResources().getString(R.string.user_name)+": "+ mUser.getUserName());	
 		
-		if (mUser.getLastCount()!=null && mUser.getCurrentCount()!=null) {
-			lastData.setText(mUser.getLastCount());
-			currentData.setText(mUser.getCurrentCount());
-			float airCountValue=Float.valueOf(mUser.getCurrentCount())-Float.valueOf(mUser.getLastCount());
-			airCount.setText(AIR_COUNT+": "+ airCountValue+ "kW.h");
-			airFee.setText(AIR_FEE+": гд"+ mUser.getAirFee());
-		}	
+		billHistory.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent=new Intent(UserActivity.this, BillHistoryActivity.class);
+				intent.putExtra("userId", mUser.getUserId());
+				startAct4Result(intent, BILL_HISTORY);
+			}
+		});
 	}
-	
-	protected UserPresenter createPresenter() {
-		return new UserPresenter(this);
-	};
 	
 	@Override
 	public void refreshUserSuccess() {
 		// TODO Auto-generated method stub
-	    showToast(getResources().getString(R.string.apply_data_success));	
+	    showToast(getResources().getString(R.string.apply_data_success));
+	    this.setResult(RESULT_OK);
+		this.finish();
+	}
+	
+	protected UserPresenter createPresenter() {
+		return new UserPresenter(UserActivity.this, this);
+	};
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode==RESULT_OK) {
+			if (requestCode==BILL_HISTORY) {
+				lastData.setText(data.getExtras().getInt("lastCount")+"");
+			}
+		}
 	}
 	
 	@Override
@@ -89,14 +110,15 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserVie
 			if (lastStr.length()>0 && currentStr.length()>0) {
 				float airCountValue = Float.valueOf(currentStr)-Float.valueOf(lastStr);
 				airCount.setText(AIR_COUNT+": "+ airCountValue+ "kW.h");
-				float airFeeValue=ELETRIC_PRICE* airCountValue;
+				float airFeeValue=Constants.PER_E_PRICE* airCountValue;
 				airFee.setText(AIR_FEE+": гд"+ airFeeValue);
-				mUser.setLastCount(lastStr);
-				mUser.setCurrentCount(currentStr);
-				mUser.setAirFee(airFeeValue);
-				mPresenter.refreshUser(mUser);
-				UserActivity.this.setResult(RESULT_OK);
-				UserActivity.this.finish();
+				Bill bill=new Bill();
+				bill.setLastCount(Integer.valueOf(lastStr));
+				bill.setCurrentCount(Integer.valueOf(currentStr));
+				bill.setPerEPrice(Constants.PER_E_PRICE);
+				bill.setAirFee(airFeeValue);
+				mUser.setCurrentbill(bill);
+				mPresenter.refreshUser(mUser);			
 			}
 			break;
 			

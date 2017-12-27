@@ -6,16 +6,20 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import android.content.Context;
 import cn.cienet.electriccalculator.bean.User;
-import cn.cienet.electriccalculator.model.DataSource;
+import cn.cienet.electriccalculator.model.FileSource;
+import cn.cienet.electriccalculator.sql.UserDao;
 
 public class BasePresenter<V> {
 	
 	protected List<User> userList;
 
 	public V view;
+	private Context context;
 	
-	public void attachView(V view){
+	public void attachView(Context context, V view){
+		this.context=context;
 		this.view=view;
 		getUserList();
 	};
@@ -24,12 +28,34 @@ public class BasePresenter<V> {
 		this.view=view;
 	}
 	
+	public int getUserAmount(){
+		
+		int userAmount=0;
+		String userAmountStr=FileSource.getInstance().readSourceFromFile("userAmount");
+		if(userAmountStr!=null){
+			String[] temp=userAmountStr.split(":");
+		    userAmount= Integer.valueOf(temp[1].trim());
+		}else {
+			FileSource.getInstance().writeSource2File("userAmount", "User amount is:"+ new UserDao(context).getUserAmount());
+			getUserAmount();
+		}
+		
+		return userAmount;
+	}
+	
 	public List<User> getUserList(){
-		String userListStr=DataSource.getInstance().readSourceFromFile("userList");
+		String userListStr=FileSource.getInstance().readSourceFromFile("userList");
 		if (userListStr!=null) {
 			userList=new Gson().fromJson(userListStr, new TypeToken<List<User>>(){}.getType());
 		}else {
-			userList=new ArrayList<User>();
+			userList=new UserDao(context).queryUsers();
+			if (userList!=null) {
+				FileSource.getInstance().writeSource2File("userList", new Gson().toJson(userList));
+				getUserList();
+				getUserAmount();
+			}else {
+				userList=new ArrayList<User>();
+			}	
 		}
 		
 		return userList;

@@ -1,23 +1,22 @@
 package cn.cienet.electriccalculator.model;
 
 import java.io.IOException;
-
 import android.os.Environment;
 import cn.cienet.electriccalculator.utils.FileUtils;
 
-public class DataSource {
+public class FileSource {
 	
-	private static final String DATA_PATH=Environment.getExternalStorageDirectory().getAbsolutePath()+"/cn.cienet.mcal/data/";
-	private volatile static DataSource instance;
+	private static final String DATA_PATH=Environment.getExternalStorageDirectory().getAbsolutePath()+"/cn.cienet.ecal/data/";
+	private volatile static FileSource instance;
 	
-	private DataSource(){}
+	private FileSource(){}
 	
-	public static DataSource getInstance(){
+	public static FileSource getInstance(){
 		
 		if(instance==null){
-    		synchronized(DataSource.class){
+    		synchronized(FileSource.class){
     			if(instance==null){
-    				instance=new DataSource();
+    				instance=new FileSource();
     			}
     		}
     	}
@@ -29,8 +28,6 @@ public class DataSource {
 			String str=FileUtils.readStringFromLocalFile(DATA_PATH, fileName);
 			if (str!=null) {
 				return str;
-			}else {
-				//read from DB
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -48,6 +45,10 @@ public class DataSource {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public void delSourceFormFile(String fileName){
+		FileUtils.deleteFile(DATA_PATH, fileName);
 	}
 	
 	

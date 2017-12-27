@@ -14,6 +14,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends Activity {
 	protected static final int INPUT_TOTAL=1;
 	protected static final int SET_USER_SIZE=2;
 	protected static final int USER_INFO=3;
+	protected static final int BILL_HISTORY=4;
 	protected MyApp mApp;
 	
 	@Override

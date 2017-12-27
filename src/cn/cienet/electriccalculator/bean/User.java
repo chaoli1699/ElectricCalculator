@@ -1,18 +1,14 @@
 package cn.cienet.electriccalculator.bean;
 
+import java.util.List;
+
 public class User {
 
 	private int userId;
 	private String userName;
-	private String userMore;
-	
-	private String lastCount;
-	private String currentCount;
-	
-	private float airFee;
-	private float publicFee;
-	private float totalFee;
-	
+	private String userMore="Пе";
+	private Bill currentbill;
+	private List<Bill> billHistory;
 	
 	public int getUserId() {
 		return userId;
@@ -32,35 +28,17 @@ public class User {
 	public void setUserMore(String userMore) {
 		this.userMore = userMore;
 	}
-	public String getLastCount() {
-		return lastCount;
+	public Bill getCurrentbill() {
+		return currentbill;
 	}
-	public void setLastCount(String lastCount) {
-		this.lastCount = lastCount;
+	public void setCurrentbill(Bill currentbill) {
+		this.currentbill = currentbill;
 	}
-	public String getCurrentCount() {
-		return currentCount;
+	public List<Bill> getBillHistory() {
+		return billHistory;
 	}
-	public void setCurrentCount(String currentCount) {
-		this.currentCount = currentCount;
-	}
-	public float getAirFee() {
-		return airFee;
-	}
-	public void setAirFee(float airFee) {
-		this.airFee = airFee;
-	}
-	public float getPublicFee() {
-		return publicFee;
-	}
-	public void setPublicFee(float publicFee) {
-		this.publicFee = publicFee;
-	}
-	public float getTotalFee() {
-		return totalFee;
-	}
-	public void setTotalFee(float totalFee) {
-		this.totalFee = totalFee;
+	public void setBillHistory(List<Bill> billHistory) {
+		this.billHistory = billHistory;
 	}
 	
 	
