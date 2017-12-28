@@ -9,20 +9,27 @@
     <string name="input_total_money">输入电费总额</string>
     <string name="set_user_max">重置用户上限</string>
     <string name="ok">确定</string>
+    <string name="chart">账单分析</string>
     
     <string name="click_twice_to_exit">再按一次退出程序</string>
     <string name="apply_data_success">提交数据成功</string>
     <string name="user_max_alert">新增用户已达上限，请在设置界面中重置用户上限</string>
     <string name="user_exist">用户已存在，无需添加</string>
     <string name="total_money_unreasonable">电费总额不合理，请检查后再试</string>
+    <string name="lack_of_user_data">数据缺失</string>
     
     <string name="user_id">用户ID</string>
     <string name="user_name">用户名</string>
+    <string name="bill_history_btn">历史账单 >></string>
+    <string name="bill_history_title">历史账单</string>
     <string name="user_more">更多</string>
     <string name="should_pay">本期应付</string>
     <string name="last_data">上期表面</string>
     <string name="current_data">本期表面</string>
+    <string name="per_e_price">电费单价</string>
     <string name="air_count">空调用电量</string>
+    <string name="public_fee">均摊电费</string>
     <string name="air_fee">空调电费</string>
+    <string name="updateTime">更新时间</string>
 
 </resources>

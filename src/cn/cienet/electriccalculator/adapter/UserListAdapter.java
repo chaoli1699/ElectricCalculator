@@ -1,7 +1,7 @@
 package cn.cienet.electriccalculator.adapter;
 
 import java.util.List;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import cn.cienet.electriccalculator.R;
 import cn.cienet.electriccalculator.bean.User;
+import cn.cienet.electriccalculator.utils.FormatUtils;
 
 public class UserListAdapter extends BaseAdapter{
 	
@@ -50,6 +51,7 @@ public class UserListAdapter extends BaseAdapter{
 		return position;
 	}
 
+	@SuppressLint("InflateParams")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
@@ -72,7 +74,7 @@ public class UserListAdapter extends BaseAdapter{
         //Bind data...
         holder.userName.setText(userList.get(position).getUserName());
         float totalPay=userList.get(position).getCurrentbill().getAirFee()+userList.get(position).getCurrentbill().getPublicFee();
-        holder.userMore.setText(context.getResources().getString(R.string.should_pay)+"г║ гд"+totalPay);
+        holder.userMore.setText(context.getResources().getString(R.string.should_pay)+"г║ гд"+FormatUtils.format2Bit(totalPay));
         if (delMode) {
 			holder.userDelete.setVisibility(View.VISIBLE);
 		}else {

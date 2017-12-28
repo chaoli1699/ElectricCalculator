@@ -1,8 +1,5 @@
 package cn.cienet.electriccalculator.adapter;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,13 +10,12 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import cn.cienet.electriccalculator.R;
 import cn.cienet.electriccalculator.bean.Bill;
+import cn.cienet.electriccalculator.utils.FormatUtils;
 
 public class BillHistoryListAdapter extends BaseAdapter{
 	
 	private List<Bill> billList;
 	private Context context;
-	@SuppressLint("SimpleDateFormat")
-	DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");  
 	
 	public BillHistoryListAdapter(Context context) {
 		// TODO Auto-generated constructor stub
@@ -48,6 +44,7 @@ public class BillHistoryListAdapter extends BaseAdapter{
 		return position;
 	}
 
+	@SuppressLint("InflateParams")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
@@ -74,8 +71,8 @@ public class BillHistoryListAdapter extends BaseAdapter{
         holder.currentCount.setText(billList.get(position).getCurrentCount()+"");
         holder.perEPrice.setText(billList.get(position).getPerEPrice()+"");
         holder.airFee.setText(billList.get(position).getAirFee()+"");
-        holder.publicFee.setText(billList.get(position).getPublicFee()+"");
-        holder.updateTime.setText(formatter.format(new Date(billList.get(position).getUpdateTime())));
+        holder.publicFee.setText(FormatUtils.format2Bit(billList.get(position).getPublicFee()+""));
+        holder.updateTime.setText(FormatUtils.formatDate(billList.get(position).getUpdateTime(), "yy/MM/dd HH:mm:ss"));
 		return convertView;
 	}
 	

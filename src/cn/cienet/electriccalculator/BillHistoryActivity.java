@@ -75,6 +75,11 @@ public class BillHistoryActivity extends BaseActivity<BillHistoryPresenter> impl
 			BillHistoryActivity.this.setResult(RESULT_CANCELED);
 			BillHistoryActivity.this.finish();
 			break;
+		case R.id.bill_history_chart:
+			Intent intent=new Intent(BillHistoryActivity.this, ChartActivity.class);
+			intent.putExtra("userId", user.getUserId());
+			startAct(intent);
+			break;
 
 		default:
 			break;
