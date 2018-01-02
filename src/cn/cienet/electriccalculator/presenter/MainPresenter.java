@@ -1,11 +1,11 @@
 package cn.cienet.electriccalculator.presenter;
 
+import java.util.List;
+
 import android.content.Context;
 import cn.cienet.electriccalculator.R;
 import cn.cienet.electriccalculator.bean.User;
-import cn.cienet.electriccalculator.model.FileSource;
-import cn.cienet.electriccalculator.sql.BillDao;
-import cn.cienet.electriccalculator.sql.UserDao;
+import cn.cienet.electriccalculator.model.DataSource;
 import cn.cienet.electriccalculator.view.MainView;
 
 public class MainPresenter extends BasePresenter<MainView> {
@@ -20,6 +20,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 	
 	public void calculate(float total_fee){
 
+		List<User> userList=getUserList();
         float left_fee=total_fee;
         float aver_fee;
         float should_pay;
@@ -44,10 +45,11 @@ public class MainPresenter extends BasePresenter<MainView> {
                 u.getCurrentbill().setPublicFee(aver_fee);
                 u.getCurrentbill().setTotalFee(should_pay);
                 
-                new BillDao(context).insertData(u);
+                DataSource.getInstance().insertDataSource(context, u);
+//                new BillDao(context).insertData(u);
             }
 
-            FileSource.getInstance().delSourceFormFile("userList");
+            DataSource.getInstance().delSourceFormFile("userList");
             view.calculateSuccess();
         }
     }
@@ -65,9 +67,10 @@ public class MainPresenter extends BasePresenter<MainView> {
 //			}
 //		}
 		
-		new UserDao(context).setUserVisableById(userId, 0);
-		FileSource.getInstance().delSourceFormFile("userList");
-		FileSource.getInstance().delSourceFormFile("userAmount");
+		DataSource.getInstance().removeUserSource(context, userId);
+//		new UserDao(context).setUserVisableById(userId, 0);
+//		DataSource.getInstance().delSourceFormFile("userList");
+//		DataSource.getInstance().delSourceFormFile("userAmount");
 		view.removeUserSuccess();
 	}
 }

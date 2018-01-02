@@ -1,10 +1,11 @@
 package cn.cienet.electriccalculator.presenter;
 
+import java.util.List;
+
 import android.content.Context;
 import cn.cienet.electriccalculator.R;
 import cn.cienet.electriccalculator.bean.User;
-import cn.cienet.electriccalculator.model.FileSource;
-import cn.cienet.electriccalculator.sql.UserDao;
+import cn.cienet.electriccalculator.model.DataSource;
 import cn.cienet.electriccalculator.view.InputView;
 
 public class InputPresenter extends BasePresenter<InputView>{
@@ -21,15 +22,17 @@ public class InputPresenter extends BasePresenter<InputView>{
 	
 	public void insertUser(String userName){
 		
+		List<User> userList=getUserList();
 		if (!ifUserExit(userName)) {
 			if (userList.size()<userSizeMax) {
 				User mUser=new User();
 				mUser.setUserId(getUserAmount()+1);
 				mUser.setUserName(userName);
 				
-				new UserDao(context).insertUser(mUser);
-				FileSource.getInstance().delSourceFormFile("userList");
-				FileSource.getInstance().delSourceFormFile("userAmount");
+				DataSource.getInstance().insertUserSource(context, mUser);
+//				new UserDao(context).insertUser(mUser);
+//				DataSource.getInstance().delSourceFormFile("userList");
+//				DataSource.getInstance().delSourceFormFile("userAmount");
 				view.inputComplate(null);
 			}else {
 				view.inputFail(context.getResources().getString(R.string.user_max_alert));
@@ -49,13 +52,13 @@ public class InputPresenter extends BasePresenter<InputView>{
 	
 	public void setUserSizeMax(int userSize){
 		if (userSize>0) {
-			FileSource.getInstance().writeSource2File("userSizeMax", "User size is: "+ userSize);
+			DataSource.getInstance().writeSource2File("userSizeMax", "User size is: "+ userSize);
 			view.inputComplate(null);
 		}
 	}
 	
 	private int getUserSizeMax(){
-		String userSizeStr=FileSource.getInstance().readSourceFromFile("userSizeMax");
+		String userSizeStr=DataSource.getInstance().readSourceFromFile("userSizeMax");
 		if (userSizeStr!=null) {
 			String[] temp=userSizeStr.split(":");
 			return Integer.valueOf(temp[1].trim());
