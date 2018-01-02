@@ -1,6 +1,7 @@
 package cn.cienet.electriccalculator;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,6 +11,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import cn.cienet.electriccalculator.bean.Bill;
 import cn.cienet.electriccalculator.bean.User;
+import cn.cienet.electriccalculator.chart.anim.Anim;
+import cn.cienet.electriccalculator.chart.data.PieChartData;
+import cn.cienet.electriccalculator.chart.view.PieChart;
 import cn.cienet.electriccalculator.presenter.UserPresenter;
 import cn.cienet.electriccalculator.utils.Constants;
 import cn.cienet.electriccalculator.view.UserView;
@@ -21,6 +25,9 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserVie
 	private TextView userId, userName, billHistory, airCount, airFee;
 	private String AIR_COUNT;
 	private String AIR_FEE;
+	
+	private float[] datas;
+	private static final int[] colors={Color.BLUE, Color.RED};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +70,25 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserVie
 				startAct4Result(intent, BILL_HISTORY);
 			}
 		});
+		
+		if (mUser.getCurrentbill()!=null) {
+			setData((PieChart)findViewById(R.id.user_pieChart));
+		}
+	}
+	
+	private void setData(PieChart pieChart){
+		datas=new float[2];
+		datas[0]=mUser.getCurrentbill().getAirFee();
+		datas[1]=mUser.getCurrentbill().getPublicFee();
+		
+		PieChartData pieChartData=PieChartData.builder()
+				.setChartTitle("上期账单分析")
+				.setDatas(datas)
+				.setColors(colors)
+				.setAnimType(Anim.ANIM_ALPHA)
+				.build();
+		
+		pieChart.setChartData(pieChartData);
 	}
 	
 	@Override
@@ -111,7 +137,7 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserVie
 				float airCountValue = Float.valueOf(currentStr)-Float.valueOf(lastStr);
 				airCount.setText(AIR_COUNT+": "+ airCountValue+ "kW.h");
 				float airFeeValue=Constants.PER_E_PRICE* airCountValue;
-				airFee.setText(AIR_FEE+": ��"+ airFeeValue);
+				airFee.setText(AIR_FEE+": ￥"+ airFeeValue);
 				Bill bill=new Bill();
 				bill.setLastCount(Integer.valueOf(lastStr));
 				bill.setCurrentCount(Integer.valueOf(currentStr));

@@ -74,7 +74,7 @@ public class UserListAdapter extends BaseAdapter{
         //Bind data...
         holder.userName.setText(userList.get(position).getUserName());
         float totalPay=userList.get(position).getCurrentbill().getAirFee()+userList.get(position).getCurrentbill().getPublicFee();
-        holder.userMore.setText(context.getResources().getString(R.string.should_pay)+"г║ гд"+FormatUtils.format2Bit(totalPay));
+        holder.userMore.setText(context.getResources().getString(R.string.should_pay)+": я┐е"+FormatUtils.format2Bit(totalPay));
         if (delMode) {
 			holder.userDelete.setVisibility(View.VISIBLE);
 		}else {

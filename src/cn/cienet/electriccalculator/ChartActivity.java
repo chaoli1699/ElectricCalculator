@@ -7,14 +7,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import cn.cienet.electriccalculator.bean.Bill;
 import cn.cienet.electriccalculator.bean.User;
+import cn.cienet.electriccalculator.chart.anim.Anim;
+import cn.cienet.electriccalculator.chart.data.LineChartData;
+import cn.cienet.electriccalculator.chart.view.LineChart;
 import cn.cienet.electriccalculator.presenter.ChartPresenter;
 import cn.cienet.electriccalculator.utils.FormatUtils;
 import cn.cienet.electriccalculator.view.ChartView;
-import cn.cienet.electriccalculator.widget.LineChart;
 
 public class ChartActivity extends BaseActivity<ChartPresenter> implements ChartView {
 	
-	private LineChart lineChart;
 	private User user;
 	
 	@Override
@@ -26,36 +27,41 @@ public class ChartActivity extends BaseActivity<ChartPresenter> implements Chart
 		initActionBar(getResources().getString(R.string.chart)+"("+user.getUserName()+")", false, true);
 		setContentView(R.layout.activity_chart);
 		
-		initView();
+		setData((LineChart) findViewById(R.id.chart_line));
 	}
 	
-	private void initView() {
-		lineChart=(LineChart) findViewById(R.id.chart_line);
+	private void setData(LineChart lineChart){
 		
-		setData();
-	}
-	
-	private void setData(){
-		String[] xLabel = new String[7];
-        String[] data = new String[7];
 		List<Bill> bills= user.getBillHistory();
-	
-		for(int k=0; k<7; k++){
-			data[k]=FormatUtils.format2Bit("0.00");
-        	xLabel[k]=FormatUtils.formatDate(System.currentTimeMillis(), "MM-dd");
-		}
         
-		int num= bills.size()>6? 7:bills.size();
-		Bill bill;
-		for(int i=0; i<num; i++){
-        	bill=bills.get(i);
-        	data[6-i]=FormatUtils.format2Bit(bill.getAirFee()+bill.getPublicFee())+"";
-        	xLabel[6-i]=FormatUtils.formatDate(bill.getUpdateTime(),"MM-dd");
+		final int xCount=10;
+		int minIndex= bills.size()<=xCount? 0:bills.size()-xCount;
+		
+		String[] xData = new String[xCount];
+		float[] yData = new float[xCount];
+		for(int i=0; i<xCount; i++){
+			xData[i]="";
+		}
+		        
+        for(int i=0; i<bills.size()-minIndex; i++){
+        	Bill bill=bills.get(i);
+        	int index=xCount-1-i;
+        	xData[index]=FormatUtils.formatDate(bill.getUpdateTime(),"yyyy-MM-dd");
+        	yData[index]=FormatUtils.format2Bit(bill.getAirFee()+bill.getPublicFee());
         }
-           
-        lineChart.setxLabel(xLabel);
-        lineChart.setData(data);
-        lineChart.fresh();    
+		
+		LineChartData lineChartData = LineChartData.builder()
+				.setChartTitle("最近"+xCount+"次缴费账单分析")
+		        .setXdata(xData)//x轴数据
+		        .setYdata(yData)//y轴数据
+		        .setXpCount(xCount)//x轴刻度数量
+//		        .setYpCount(num)//y轴刻度数量
+		        .setStartFrom0(false) //不从原点开始划线
+		        .setCoordinatesColor(getResources().getColor(android.R.color.holo_orange_dark))
+		        .setAnimType(Anim.ANIM_ALPHA)//动画效果，目前仅支持两种
+		        .build();
+		lineChart.setChartData(lineChartData);
+		   
 	}
 	
 	@Override

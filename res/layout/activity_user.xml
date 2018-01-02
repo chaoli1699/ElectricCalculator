@@ -92,5 +92,12 @@
         android:layout_below="@id/user_airCount"
         android:text="@string/air_fee"
         android:textSize="@dimen/text_title_dimen"/>
+    
+    <cn.cienet.electriccalculator.chart.view.PieChart
+        android:id="@+id/user_pieChart" 
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/user_airFee"/>
 
 </RelativeLayout>
