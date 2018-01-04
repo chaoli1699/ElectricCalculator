@@ -28,6 +28,7 @@ public class LineChart extends Chart {
     private int line_path_style;//折线样式
     private float line_width;//折现宽度
     private boolean startFrom0=true;
+    private int[] linesColors;
 
     public LineChart(Context context) {
         super(context);
@@ -69,21 +70,20 @@ public class LineChart extends Chart {
 	@Override
     protected void onDraw(final Canvas canvas) {
         super.onDraw(canvas);
-        if (animsList!=null) {
-			for(int i=0; i<animsList.size(); i++){
+        if (yDataList!=null) {
+			for(int i=0; i<yDataList.size(); i++){
 				yData=yDataList.get(i);
-				drawLine(canvas, animsList.get(i));
+				drawLine(canvas, i);
 			}
 		}else {
-			drawLine(canvas, anims);
-		}
-//        drawLine(canvas, animsList.get(0));    
+			drawLine(canvas, -1);
+		}   
     }
 
     /*
      * 画折线
      */
-    private void drawLine(Canvas canvas, Anim[] anims){
+    private void drawLine(Canvas canvas,int colorIndex){
         //如果没有设置x轴数据
         if (xData == null){
             throw new NullPointerException("x轴数据源不能为空!");
@@ -92,44 +92,64 @@ public class LineChart extends Chart {
         if (yData == null){
             throw new NullPointerException("y轴数据源不能为空!");
         }
+        
         //折线画笔
         Paint linePaint = new Paint();
-        linePaint.setColor(line_color);
+        //折点画笔
+        Paint pointPaint = new Paint();
+        if (colorIndex>-1) {
+			linePaint.setColor(getResources().getColor(linesColors[colorIndex]));
+			pointPaint.setColor(getResources().getColor(linesColors[colorIndex]));
+		}else {
+			linePaint.setColor(line_color);
+            pointPaint.setColor(point_color);
+        }
         linePaint.setAntiAlias(true);
         linePaint.setStyle(line_path_style == 0 ? Paint.Style.STROKE : Paint.Style.FILL);
         linePaint.setStrokeWidth(line_width);
-        //折点画笔
-        Paint pointPaint = new Paint();
-        pointPaint.setColor(point_color);
+        
         pointPaint.setAntiAlias(true);
         pointPaint.setStyle(Paint.Style.FILL);
         pointPaint.setStrokeWidth(point_size);
+        
         //画折点和折线
         Path path=new Path();
 		if (startFrom0) {
 			path.moveTo(oX, oY);
 		}else {
-		    path.moveTo(anims[0].getFinalX(),anims[0].getCurrentY());
+			if (yDataList!=null) {
+			    path.moveTo(oX+xCoordinates[0],oY-yData[0]/yMax*yCoordinates[yCoordinates.length-1]);
+			}else {
+		        path.moveTo(anims[0].getFinalX(),anims[0].getCurrentY());
+			}
 		}
 		Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint.setTextSize(point_text_size);
         textPaint.setColor(point_text_color);
         DecimalFormat formater = new DecimalFormat("0.000");
         for (int i=0;i<xpCount;i++){
-            //float dataX = oX+xCoordinates[i];
-            //float dataY = oY-yData[i]/yMax*yCoordinates[yCoordinates.length-1];
-        	int alpha = anims[i].getAlpha();
-            linePaint.setAlpha(alpha);
-            pointPaint.setAlpha(alpha);
-            textPaint.setAlpha(alpha);
-            canvas.drawPoint(anims[i].getFinalX(),anims[i].getCurrentY(),pointPaint);
-            //画折点上文字
+        	
+        	//画折点上文字
             String text = formater.format(yData[i]);
             int[] textSize = getTextSize(text,textPaint);
             int textX = textSize[0];
             int textY = textSize[1];
-            canvas.drawText(text,anims[i].getFinalX()-textX/2,anims[i].getCurrentY()-textY,textPaint);
-            path.lineTo(anims[i].getFinalX(),anims[i].getCurrentY());     
+            
+        	if (yDataList!=null) {
+                float dataX = oX+xCoordinates[i];
+                float dataY = oY-yData[i]/yMax*yCoordinates[yCoordinates.length-1];
+                canvas.drawPoint(dataX, dataY, pointPaint);
+                canvas.drawText(text,dataX-textX/2,dataY-textY,textPaint);
+                path.lineTo(dataX, dataY); 
+        	}else {
+        		int alpha = anims[i].getAlpha();
+                linePaint.setAlpha(alpha);
+                pointPaint.setAlpha(alpha);
+                textPaint.setAlpha(alpha);
+                canvas.drawPoint(anims[i].getFinalX(),anims[i].getCurrentY(),pointPaint);
+                canvas.drawText(text,anims[i].getFinalX()-textX/2,anims[i].getCurrentY()-textY,textPaint);
+                path.lineTo(anims[i].getFinalX(),anims[i].getCurrentY());   
+        	}
         }
         
         switch (line_path_style){
@@ -161,5 +181,6 @@ public class LineChart extends Chart {
         this.line_path_style = lineData.getLinePathStyle() != -1 ?
                 lineData.getLinePathStyle() : this.line_path_style;
         this.startFrom0=lineData.isStartFrom0();
+        this.linesColors=lineData.getLinesColors();
     }
 }

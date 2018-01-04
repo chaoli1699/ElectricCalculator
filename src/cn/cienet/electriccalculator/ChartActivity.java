@@ -59,11 +59,14 @@ public class ChartActivity extends BaseActivity<ChartPresenter> implements Chart
     	ydataList.add(yData2);
     	ydataList.add(yData3);
 		
+    	int[] colors={R.color.red, R.color.green, R.color.blue,};
+    	
 		LineChartData lineChartData = LineChartData.builder()
 				.setChartTitle("最近"+xCount+"次缴费账单分析")
 		        .setXdata(xData)//x轴数据
-		        .setYdata(yData)//y轴数据
-//				.setYDataList(ydataList)
+//		        .setYdata(yData)//y轴数据
+				.setYDataList(ydataList)
+				.setLinesColor(colors)
 		        .setXpCount(xCount)//x轴刻度数量
 		        .setStartFrom0(false) //不从原点开始划线
 		        .setCoordinatesColor(getResources().getColor(android.R.color.holo_orange_dark))

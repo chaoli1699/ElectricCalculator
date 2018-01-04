@@ -19,6 +19,7 @@ public class LineChartData extends ChartData {
     private float lineWidth;
     private int linePathStyle = -1;
     private boolean startFrom0=true;
+    private int[] linesColors;
 
     private LineChartData(Builder builder) {
         this.xdata = builder.xdata;
@@ -43,6 +44,7 @@ public class LineChartData extends ChartData {
         this.startFrom0=builder.startFrom0;
         this.chartTitle=builder.chartTitle;
         this.yDataList=builder.yDataList;
+        this.linesColors=builder.linesColors;
     }
 
     public static Builder builder() {
@@ -113,6 +115,14 @@ public class LineChartData extends ChartData {
 		this.startFrom0 = startFrom0;
 	}
 
+	public int[] getLinesColors() {
+		return linesColors;
+	}
+
+	public void setLinesColors(int[] linesColors) {
+		this.linesColors = linesColors;
+	}
+
 
 
 	public final static class Builder{
@@ -138,6 +148,7 @@ public class LineChartData extends ChartData {
         private boolean startFrom0=true;
         private String chartTitle;
         private List<float[]> yDataList;
+        private int[] linesColors;
 
         private Builder(){}
 
@@ -249,6 +260,11 @@ public class LineChartData extends ChartData {
         
         public Builder setYDataList(List<float[]> yDatas){
         	this.yDataList=yDatas;
+        	return this;
+        }
+        
+        public Builder setLinesColor(int[] linesColors){
+        	this.linesColors=linesColors;
         	return this;
         }
 
