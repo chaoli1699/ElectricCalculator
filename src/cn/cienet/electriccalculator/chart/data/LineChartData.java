@@ -1,5 +1,7 @@
 package cn.cienet.electriccalculator.chart.data;
 
+import java.util.List;
+
 import cn.cienet.electriccalculator.chart.anim.Anim;
 
 /**
@@ -40,6 +42,7 @@ public class LineChartData extends ChartData {
         this.linePathStyle = builder.linePathStyle;
         this.startFrom0=builder.startFrom0;
         this.chartTitle=builder.chartTitle;
+        this.yDataList=builder.yDataList;
     }
 
     public static Builder builder() {
@@ -134,6 +137,7 @@ public class LineChartData extends ChartData {
         private int linePathStyle = -1;
         private boolean startFrom0=true;
         private String chartTitle;
+        private List<float[]> yDataList;
 
         private Builder(){}
 
@@ -240,6 +244,11 @@ public class LineChartData extends ChartData {
         
         public Builder setChartTitle(String title){
         	this.chartTitle=title;
+        	return this;
+        }
+        
+        public Builder setYDataList(List<float[]> yDatas){
+        	this.yDataList=yDatas;
         	return this;
         }
 

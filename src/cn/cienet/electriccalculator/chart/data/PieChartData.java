@@ -15,6 +15,7 @@ public class PieChartData {
     private int animType = -2;
     private OnPieItemClickListener pieItemClickListener;//图表item点击监听
     private String chartTitle;
+    private String[] pieNames;
 
     private PieChartData(Builder builder) {
         setDatas(builder.datas);
@@ -25,6 +26,7 @@ public class PieChartData {
         setAnimType(builder.animType);
         setPieItemClickListener(builder.pieItemClickListener);
         setChartTitle(builder.chartTitle);
+        setPieNames(builder.pieNames);
     }
 
     public static Builder builder() {
@@ -95,6 +97,15 @@ public class PieChartData {
 		this.chartTitle = chartTitle;
 	}
 
+	public String[] getPieNames() {
+		return pieNames;
+	}
+
+	public void setPieNames(String[] pieNames) {
+		this.pieNames = pieNames;
+	}
+
+
 
 
 	public static final class Builder{
@@ -106,6 +117,7 @@ public class PieChartData {
         private int animType = -2;//动画
         private OnPieItemClickListener pieItemClickListener;//图表item点击监听
         private String chartTitle;
+        private String[] pieNames;
 
         public Builder setDatas(float[] datas) {
             this.datas = datas;
@@ -144,6 +156,11 @@ public class PieChartData {
         
         public Builder setChartTitle(String title){
         	this.chartTitle=title;
+        	return this;
+        }
+        
+        public Builder setPieNames(String[] pieNames){
+        	this.pieNames=pieNames;
         	return this;
         }
 

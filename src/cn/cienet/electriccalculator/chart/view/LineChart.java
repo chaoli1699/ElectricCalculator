@@ -19,6 +19,7 @@ import java.text.DecimalFormat;
  * Created by zqx on 16/6/25.
  */
 public class LineChart extends Chart {
+	
     private int point_color;//折点颜色
     private int point_text_size;//折点文字尺寸
     private int point_text_color;//折点文字颜色
@@ -65,17 +66,24 @@ public class LineChart extends Chart {
         types.recycle();
     }
 
-
-    @Override
-    protected void onDraw(Canvas canvas) {
+	@Override
+    protected void onDraw(final Canvas canvas) {
         super.onDraw(canvas);
-        drawLine(canvas);
+        if (animsList!=null) {
+			for(int i=0; i<animsList.size(); i++){
+				yData=yDataList.get(i);
+				drawLine(canvas, animsList.get(i));
+			}
+		}else {
+			drawLine(canvas, anims);
+		}
+//        drawLine(canvas, animsList.get(0));    
     }
 
     /*
      * 画折线
      */
-    private void drawLine(Canvas canvas){
+    private void drawLine(Canvas canvas, Anim[] anims){
         //如果没有设置x轴数据
         if (xData == null){
             throw new NullPointerException("x轴数据源不能为空!");
@@ -97,20 +105,20 @@ public class LineChart extends Chart {
         pointPaint.setStyle(Paint.Style.FILL);
         pointPaint.setStrokeWidth(point_size);
         //画折点和折线
-        Path path = new Path();
-        if (startFrom0) {
+        Path path=new Path();
+		if (startFrom0) {
 			path.moveTo(oX, oY);
 		}else {
-			path.moveTo(anims[0].getFinalX(),anims[0].getCurrentY());
+		    path.moveTo(anims[0].getFinalX(),anims[0].getCurrentY());
 		}
-        Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint.setTextSize(point_text_size);
         textPaint.setColor(point_text_color);
         DecimalFormat formater = new DecimalFormat("0.000");
         for (int i=0;i<xpCount;i++){
             //float dataX = oX+xCoordinates[i];
             //float dataY = oY-yData[i]/yMax*yCoordinates[yCoordinates.length-1];
-            int alpha = anims[i].getAlpha();
+        	int alpha = anims[i].getAlpha();
             linePaint.setAlpha(alpha);
             pointPaint.setAlpha(alpha);
             textPaint.setAlpha(alpha);
@@ -121,21 +129,23 @@ public class LineChart extends Chart {
             int textX = textSize[0];
             int textY = textSize[1];
             canvas.drawText(text,anims[i].getFinalX()-textX/2,anims[i].getCurrentY()-textY,textPaint);
-            path.lineTo(anims[i].getFinalX(),anims[i].getCurrentY());
+            path.lineTo(anims[i].getFinalX(),anims[i].getCurrentY());     
         }
+        
         switch (line_path_style){
-            case 0:
-                canvas.drawPath(path,linePaint);
-                break;
-            case 1:
-                linePaint.setStyle(Paint.Style.FILL);
-                path.close();
-                canvas.drawPath(path,linePaint);
-                break;
-            default:
-                canvas.drawPath(path,linePaint);
-                break;
-        }
+        case 0:
+            canvas.drawPath(path,linePaint);
+            break;
+        case 1:
+            linePaint.setStyle(Paint.Style.FILL);
+            path.close();
+            canvas.drawPath(path,linePaint);
+            break;
+        default:
+            canvas.drawPath(path,linePaint);
+            break;
+        } 
+			
     }
 
     @Override

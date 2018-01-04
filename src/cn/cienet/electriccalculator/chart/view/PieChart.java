@@ -47,6 +47,8 @@ public class PieChart extends View{
     private float cTextSize = 0;
     private OnPieItemClickListener pieItemClickListener;//图表item点击监听
     private String chartTitle;
+    private static final int titleTextSize=45;
+    private String[] pieNames;
 
     public PieChart(Context context) {
         super(context);
@@ -108,7 +110,7 @@ public class PieChart extends View{
             right = width - getPaddingRight() - surplus;
             bottom = height - getPaddingBottom() - surplus - sur;
         }
-        pieRadius = (right - left) / 2;
+        pieRadius = (bottom - top - titleTextSize) / 2;
         oX = left + (right - left) / 2;
         oY = top + (bottom - top) / 2;
         float allsDegree = separationDegree * datas.length;
@@ -125,6 +127,7 @@ public class PieChart extends View{
             sector.startDegree = start;
             sector.endDegree = start + finalDegree;
             sector.percent = percent;
+            sector.pieName = pieNames[j];
             sectors[j] = sector;
             start += finalDegree + separationDegree;
         }
@@ -210,16 +213,19 @@ public class PieChart extends View{
         String precent = formater.format(sectors[currentSel].percent);
         paint.setTextSize(cTextSize != 0 ? cTextSize : pieRadius/6);
         int[] textSize = getTextSize(precent,paint);
-        canvas.drawText(precent,oX-textSize[0]/2,oY+textSize[1]/2,paint);
+        if (pieNames!=null) {
+            canvas.drawText(sectors[currentSel].pieName, oX-textSize[0]/3, oY-textSize[1]/2, paint);
+		}
+        canvas.drawText(precent,oX-textSize[0]/2,oY+textSize[1],paint);
+        
         if (chartTitle!=null) {
         	Paint titlePaint=new Paint();
-        	int titleTextSize=45;
         	titlePaint.setAntiAlias(true);
         	titlePaint.setColor(getResources().getColor(R.color.orangered));
         	titlePaint.setTextSize(titleTextSize);
 			canvas.drawText(chartTitle,
 					oX-chartTitle.length()*titleTextSize/2,
-					oY*2-titleTextSize/4,
+					oY+ pieRadius +titleTextSize*3/2,
 					titlePaint);
 		}
     }
@@ -348,11 +354,13 @@ public class PieChart extends View{
                 : this.animType;
         pieItemClickListener = pieChartData.getPieItemClickListener();
         chartTitle=pieChartData.getChartTitle();
+        pieNames=pieChartData.getPieNames();
     }
 
     private class Sector{
         public float startDegree;
         public float endDegree;
         public float percent;
+        public String pieName;
     }
 }

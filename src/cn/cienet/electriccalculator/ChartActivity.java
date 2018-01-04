@@ -1,5 +1,6 @@
 package cn.cienet.electriccalculator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
@@ -39,23 +40,31 @@ public class ChartActivity extends BaseActivity<ChartPresenter> implements Chart
 		
 		String[] xData = new String[xCount];
 		float[] yData = new float[xCount];
+		float[] yData2 = new float[xCount];
+		float[] yData3 = new float[xCount];
 		for(int i=0; i<xCount; i++){
 			xData[i]="";
 		}
 		        
+		List<float[]> ydataList=new ArrayList<float[]>();
         for(int i=0; i<bills.size()-minIndex; i++){
         	Bill bill=bills.get(i);
         	int index=xCount-1-i;
         	xData[index]=FormatUtils.formatDate(bill.getUpdateTime(),"yyyy-MM-dd");
         	yData[index]=FormatUtils.format2Bit(bill.getAirFee()+bill.getPublicFee());
+        	yData2[index]=FormatUtils.format2Bit(bill.getPublicFee());
+        	yData3[index]=FormatUtils.format2Bit(bill.getAirFee());
         }
+        ydataList.add(yData);
+    	ydataList.add(yData2);
+    	ydataList.add(yData3);
 		
 		LineChartData lineChartData = LineChartData.builder()
 				.setChartTitle("最近"+xCount+"次缴费账单分析")
 		        .setXdata(xData)//x轴数据
 		        .setYdata(yData)//y轴数据
+//				.setYDataList(ydataList)
 		        .setXpCount(xCount)//x轴刻度数量
-//		        .setYpCount(num)//y轴刻度数量
 		        .setStartFrom0(false) //不从原点开始划线
 		        .setCoordinatesColor(getResources().getColor(android.R.color.holo_orange_dark))
 		        .setAnimType(Anim.ANIM_ALPHA)//动画效果，目前仅支持两种

@@ -1,5 +1,7 @@
 package cn.cienet.electriccalculator.chart.data;
 
+import java.util.List;
+
 /**
  * 统计图父类数据类
  * Created by zqx on 16/6/27.
@@ -18,6 +20,7 @@ public class ChartData {
     protected int interval;
     protected int animType = -2;
     protected String chartTitle;
+    protected List<float[]> yDataList;
 
     protected ChartData(){}
 
@@ -124,5 +127,14 @@ public class ChartData {
 	public void setChartTitle(String chartTitle) {
 		this.chartTitle = chartTitle;
 	}
+
+	public List<float[]> getyDataList() {
+		return yDataList;
+	}
+
+	public void setyDataList(List<float[]> yDataList) {
+		this.yDataList = yDataList;
+	}
+	
     
 }

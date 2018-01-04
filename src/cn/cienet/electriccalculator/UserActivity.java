@@ -26,9 +26,6 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserVie
 	private String AIR_COUNT;
 	private String AIR_FEE;
 	
-	private float[] datas;
-	private static final int[] colors={Color.BLUE, Color.RED};
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -77,12 +74,16 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserVie
 	}
 	
 	private void setData(PieChart pieChart){
-		datas=new float[2];
+		
+		final int[] colors={Color.BLUE, Color.RED};
+		String[] pieNames={"空调","均摊"};
+		float[] datas= new float[2];
 		datas[0]=mUser.getCurrentbill().getAirFee();
 		datas[1]=mUser.getCurrentbill().getPublicFee();
 		
 		PieChartData pieChartData=PieChartData.builder()
 				.setChartTitle("上期账单分析")
+				.setPieNames(pieNames)
 				.setDatas(datas)
 				.setColors(colors)
 				.setAnimType(Anim.ANIM_ALPHA)

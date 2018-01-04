@@ -12,6 +12,8 @@ import cn.cienet.electriccalculator.chart.anim.TranslateAnim;
 import cn.cienet.electriccalculator.chart.data.ChartData;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 统计图
@@ -47,6 +49,8 @@ public class Chart extends View{
     protected int animType = -2;//动画
     protected String chartTitle;
     protected static final int titleTextSize=45;
+    protected List<float[]> yDataList;
+    protected List<Anim[]> animsList;
 
     public Chart(Context context) {
         super(context);
@@ -185,9 +189,10 @@ public class Chart extends View{
      * 准备动画
      */
     private void initAnims() {
-        anims = new Anim[xpCount];
+    	
         switch (animType){
             case Anim.ANIM_TRANSLATE:
+            	anims = new Anim[xpCount];
                 for (int i=0;i<xpCount;i++){
                     float dataX = oX+xCoordinates[i];
                     float dataY = oY-yData[i]/yMax*yCoordinates[yCoordinates.length-1];
@@ -198,17 +203,37 @@ public class Chart extends View{
                 }
                 break;
             case Anim.ANIM_ALPHA:
-                for (int i=0;i<xpCount;i++){
-                    float dataX = oX+xCoordinates[i];
-                    float dataY = oY-yData[i]/yMax*yCoordinates[yCoordinates.length-1];
-                    Anim anim = new Anim(dataX,dataY,dataX,dataY);
-                    anim.setAnimation(new AlphaAnim());
-                    anim.setAlpha(0);
-                    anim.setVelocity(interval * 3/2);
-                    anims[i] = anim;
+            	if (yDataList!=null) {
+            		
+            		animsList=new ArrayList<Anim[]>();
+            		for(int j=0; j<yDataList.size(); j++){
+            	        anims = new Anim[xpCount];
+        				for (int i=0;i<xpCount;i++){
+    						float dataX = oX+xCoordinates[i];
+						    float dataY= oY-yDataList.get(j)[i]/yMax*yCoordinates[yCoordinates.length-1];
+						    Anim anim=new Anim(dataX, dataY, dataX, dataY);
+						    anim.setAnimation(new AlphaAnim());
+						    anim.setAlpha(0);
+						    anim.setVelocity(interval * 3/2);
+						    anims[i] = anim;
+					    }
+        				animsList.add(anims);
+				    }
+				}else {
+			        anims = new Anim[xpCount];
+					for (int i=0;i<xpCount;i++){
+						float dataX = oX+xCoordinates[i];
+						float dataY = oY-yData[i]/yMax*yCoordinates[yCoordinates.length-1];
+	                    Anim anim = new Anim(dataX,dataY,dataX,dataY);
+	                    anim.setAnimation(new AlphaAnim());
+	                    anim.setAlpha(0);
+	                    anim.setVelocity(interval * 3/2);
+	                    anims[i] = anim;
+					}
                 }
                 break;
             default:
+            	anims = new Anim[xpCount];
                 for (int i=0;i<xpCount;i++){
                     float dataX = oX+xCoordinates[i];
                     float dataY = oY-yData[i]/yMax*yCoordinates[yCoordinates.length-1];
@@ -225,15 +250,31 @@ public class Chart extends View{
      * 获取y轴最大值
      */
     protected float getYMax(){
-        if (yData == null || yData.length == 0){
-            yData = new float[ypCount];
-        }
-        float max = 1f;
-        for (int i=0; i<yData.length; i++){
-            if (max < yData[i]){
-                max = yData[i];
-            }
-        }
+    	float max = 1f;
+    	if (yDataList!=null) {
+    		for(int j=0; j<yDataList.size(); j++){
+    			yData=yDataList.get(j);
+    			
+    			if (yData == null || yData.length == 0){
+    	            yData = new float[ypCount];
+    	        }
+    	        for (int i=0; i<yData.length; i++){
+    	            if (max < yData[i]){
+    	                max = yData[i];
+    	            }
+    	        }
+    		}
+		}else {
+			if (yData == null || yData.length == 0){
+	            yData = new float[ypCount];
+	        }
+	        for (int i=0; i<yData.length; i++){
+	            if (max < yData[i]){
+	                max = yData[i];
+	            }
+	        }
+		}
+    	
         return max;
     }
 
@@ -269,6 +310,7 @@ public class Chart extends View{
                 : this.animType;
         this.yMax = chartData.getyMax() != 0f ? chartData.getyMax() : this.yMax;
         this.chartTitle=chartData.getChartTitle();
+        this.yDataList=chartData.getyDataList();
     }
     /*
      * 设置正确属性值
