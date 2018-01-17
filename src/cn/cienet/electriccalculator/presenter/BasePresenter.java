@@ -11,12 +11,14 @@ public class BasePresenter<V> {
 //	protected List<User> userList;
 
 	public V view;
-	private Context context;
+//	private Context context;
+	protected DataSource dataSource;
 	
 	public void attachView(Context context, V view){
-		this.context=context;
+//		this.context=context;
 		this.view=view;
 //		getUserList();
+		dataSource=new DataSource(context);
 	};
 	
 	public void detachView(V view){
@@ -35,7 +37,7 @@ public class BasePresenter<V> {
 //			getUserAmount();
 //		}
 		
-		return DataSource.getInstance().getUserAmountSource(context);
+		return dataSource.getUserAmountSource();
 	}
 	
 	public List<User> getUserList(){
@@ -54,7 +56,7 @@ public class BasePresenter<V> {
 //			}	
 //		}
 		
-		return DataSource.getInstance().getUserListSource(context);
+		return dataSource.getUserListSource();
 	}
 	
 	public User getUserById(int userId){

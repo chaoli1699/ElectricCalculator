@@ -5,7 +5,6 @@ import java.util.List;
 import android.content.Context;
 import cn.cienet.electriccalculator.R;
 import cn.cienet.electriccalculator.bean.User;
-import cn.cienet.electriccalculator.model.DataSource;
 import cn.cienet.electriccalculator.view.InputView;
 
 public class InputPresenter extends BasePresenter<InputView>{
@@ -29,7 +28,7 @@ public class InputPresenter extends BasePresenter<InputView>{
 				mUser.setUserId(getUserAmount()+1);
 				mUser.setUserName(userName);
 				
-				DataSource.getInstance().insertUserSource(context, mUser);
+				dataSource.insertUserSource(mUser);
 //				new UserDao(context).insertUser(mUser);
 //				DataSource.getInstance().delSourceFormFile("userList");
 //				DataSource.getInstance().delSourceFormFile("userAmount");
@@ -52,13 +51,13 @@ public class InputPresenter extends BasePresenter<InputView>{
 	
 	public void setUserSizeMax(int userSize){
 		if (userSize>0) {
-			DataSource.getInstance().writeSource2File("userSizeMax", "User size is: "+ userSize);
+			dataSource.writeSource2File("userSizeMax", "User size is: "+ userSize);
 			view.inputComplate(null);
 		}
 	}
 	
 	private int getUserSizeMax(){
-		String userSizeStr=DataSource.getInstance().readSourceFromFile("userSizeMax");
+		String userSizeStr=dataSource.readSourceFromFile("userSizeMax");
 		if (userSizeStr!=null) {
 			String[] temp=userSizeStr.split(":");
 			return Integer.valueOf(temp[1].trim());

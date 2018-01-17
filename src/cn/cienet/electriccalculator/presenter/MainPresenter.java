@@ -5,7 +5,6 @@ import java.util.List;
 import android.content.Context;
 import cn.cienet.electriccalculator.R;
 import cn.cienet.electriccalculator.bean.User;
-import cn.cienet.electriccalculator.model.DataSource;
 import cn.cienet.electriccalculator.view.MainView;
 
 public class MainPresenter extends BasePresenter<MainView> {
@@ -45,11 +44,11 @@ public class MainPresenter extends BasePresenter<MainView> {
                 u.getCurrentbill().setPublicFee(aver_fee);
                 u.getCurrentbill().setTotalFee(should_pay);
                 
-                DataSource.getInstance().insertDataSource(context, u);
+                dataSource.insertDataSource(u);
 //                new BillDao(context).insertData(u);
             }
 
-            DataSource.getInstance().delSourceFormFile("userList");
+            dataSource.delSourceFormFile("userList");
             view.calculateSuccess();
         }
     }
@@ -67,7 +66,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 //			}
 //		}
 		
-		DataSource.getInstance().removeUserSource(context, userId);
+		dataSource.removeUserSource(userId);
 //		new UserDao(context).setUserVisableById(userId, 0);
 //		DataSource.getInstance().delSourceFormFile("userList");
 //		DataSource.getInstance().delSourceFormFile("userAmount");
