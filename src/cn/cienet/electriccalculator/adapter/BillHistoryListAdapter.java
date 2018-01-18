@@ -70,7 +70,7 @@ public class BillHistoryListAdapter extends BaseAdapter{
         holder.lastCount.setText(billList.get(position).getLastCount()+"");
         holder.currentCount.setText(billList.get(position).getCurrentCount()+"");
         holder.perEPrice.setText(billList.get(position).getPerEPrice()+"");
-        holder.airFee.setText(billList.get(position).getAirFee()+"");
+        holder.airFee.setText(FormatUtils.format2Bit(billList.get(position).getAirFee())+"");
         holder.publicFee.setText(FormatUtils.format2Bit(billList.get(position).getPublicFee()+""));
         holder.updateTime.setText(FormatUtils.formatDate(billList.get(position).getUpdateTime(), "yy/MM/dd HH:mm:ss"));
 		return convertView;
