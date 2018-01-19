@@ -48,6 +48,7 @@ public class BillHistoryListAdapter extends BaseAdapter{
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
+		
 		ViewHolder holder = null;  
         if (convertView == null) {  
             holder = new ViewHolder();  
@@ -65,6 +66,12 @@ public class BillHistoryListAdapter extends BaseAdapter{
         } else {  
             holder = (ViewHolder) convertView.getTag();  
         } 
+        
+        if (position%2==0) {
+			convertView.setBackground(context.getResources().getDrawable(R.drawable.shape_bill_history_bg));
+		}else {
+			convertView.setBackground(context.getResources().getDrawable(R.drawable.shape_bill_history_darkbg));
+		}
         
         //Bind data...
         holder.lastCount.setText(billList.get(position).getLastCount()+"");
