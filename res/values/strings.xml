@@ -24,12 +24,12 @@
     <string name="bill_history_title">历史账单</string>
     <string name="user_more">更多</string>
     <string name="should_pay">本期应付</string>
-    <string name="last_data">上期表面</string>
-    <string name="current_data">本期表面</string>
-    <string name="per_e_price">电费单价</string>
-    <string name="air_count">空调用电量</string>
-    <string name="public_fee">均摊电费</string>
-    <string name="air_fee">空调电费</string>
+    <string name="last_data">上期表面(kw.h)</string>
+    <string name="current_data">本期表面(kw.h)</string>
+    <string name="per_e_price">电费单价(元)</string>
+    <string name="air_count">空调用电量(kw.h)</string>
+    <string name="public_fee">均摊电费(元)</string>
+    <string name="air_fee">空调电费(元)</string>
     <string name="updateTime">更新时间</string>
 
 </resources>

@@ -38,6 +38,7 @@ public class BillHistoryActivity extends BaseActivity<BillHistoryPresenter> impl
 			billHistoryListAdapter=new BillHistoryListAdapter(this);
 			billHistoryListAdapter.setBillsSource(user.getBillHistory());
 			billHistoryList.setAdapter(billHistoryListAdapter);
+			
 		}
 		
 		billHistoryList.setOnItemClickListener(new OnItemClickListener() {

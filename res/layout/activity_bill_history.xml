@@ -4,12 +4,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
+   
     <include layout="@layout/item_bill_history_list"/>
     
     <ListView 
         android:id="@+id/bill_history_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"></ListView>
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:divider="@null" 
+        android:scrollbars="none">
+        
+    </ListView>
+   
 
 </LinearLayout>
